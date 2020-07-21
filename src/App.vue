@@ -18,11 +18,12 @@
         </div>
         <div class="weather-box">
           <div class="temp">{{ Math.round(weather.main.temp) }}°c</div>
+          <div class="temp_min_max">{{ Math.round(weather.main.temp_min) }} / {{ Math.round(weather.main.temp_max) }} °c</div>
+
+
           <div class="weather">{{ weather.weather[0].main }}</div>
-          <div class="weather">Taux d'humidité: {{ weather.main.humidity }}%</div>
-          <div class="weather">Pression atmosphérique: {{ weather.main.pressure }}hPa</div>
-          <div class="weather">Vitesse du vent: {{ Math.round(weather.wind.speed*3,6) }}km/h</div>
-          <div class="weather">Direction du vent: {{ Math.round(weather.wind.deg) }}°</div>
+          <div class="pressure-humidity"><i class="fas fa-tint"></i> {{ weather.main.humidity }}%  {{ weather.main.pressure }}hPa</div>
+          <div class="weather"><i class="fas fa-wind"></i> {{ Math.round(weather.wind.speed*3,6) }}km/h <i class="far fa-compass"></i> {{ Math.round(weather.wind.deg) }}°</div>
         </div>
       </div>
 
@@ -70,6 +71,7 @@ export default {
     }
   }
 }
+
 </script>
 
 <style>
@@ -164,10 +166,26 @@ main {
   box-shadow: 3px 6px rgba(0, 0, 0, 0.25);
 }
 
+.weather-box .temp_min_max {
+  color: #FFF;
+  font-size: 32px;
+  font-weight: 500;
+  font-style: normal;
+  text-shadow: 3px 6px rgba(0, 0, 0, 0.25);
+}
+
 .weather-box .weather {
   color: #FFF;
   font-size: 48px;
   font-weight: 700;
+  font-style: italic;
+  text-shadow: 3px 6px rgba(0, 0, 0, 0.25);
+}
+
+.weather-box .pressure-humidity {
+  color: #FFF;
+  font-size: 48px;
+  font-weight: 200;
   font-style: italic;
   text-shadow: 3px 6px rgba(0, 0, 0, 0.25);
 }
