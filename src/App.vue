@@ -17,17 +17,46 @@
           <div class="date">{{ dateBuilder() }}</div>
         </div>
         <div class="weather-box">
-          <div class="temp">{{ Math.round(weather.main.temp) }}°c</div>
-          <div class="temp_min_max">{{ Math.round(weather.main.temp_min) }} / {{ Math.round(weather.main.temp_max) }} °c</div>
-
-
-          <div class="weather">{{ weather.weather[0].main }}</div>
-          <div class="pressure-humidity"><i class="fas fa-tint"></i> {{ weather.main.humidity }}%  {{ weather.main.pressure }}hPa</div>
-          <div class="weather"><i class="fas fa-wind"></i> {{ Math.round(weather.wind.speed*3,6) }}km/h <i class="far fa-compass"></i> {{ Math.round(weather.wind.deg) }}°</div>
+          <div class="temps">
+            <div class="temp">{{ Math.round(weather.main.temp) }}°c</div>
+            <div class="temp_min_max">{{ Math.round(weather.main.temp_min) }} / {{ Math.round(weather.main.temp_max) }} °c</div>
+          </div>
+          <div class="weather-description"><i class="fas fa-cloud-sun fa-3x"></i></div>
+          <div class="weather-description">{{ weather.weather[0].main }}</div>
+          <div class="weather">
+            <div class="pressure-humidity">
+              <div><i class="fas fa-tint"></i> {{ weather.main.humidity }}%</div>  
+              <div>{{ weather.main.pressure }}hPa</div>
+            </div>
+            <div class="wind">
+              <div><i class="fas fa-wind"></i> {{ Math.round(weather.wind.speed*3,6) }}km/h</div> 
+              <div><i class="far fa-compass"></i> {{ Math.round(weather.wind.deg) }}°</div>
+            </div>
+          </div>
+        </div>
+        <div class="weather-forecast">
+          <div class="weather-d">
+            <div class="weather"><i class="fas fa-cloud-sun"></i></div>
+            18 / 23°C
+            <div class="date">{{ dateForcastOneBuilder() }}</div>
+          </div>
+          <div class="weather-d">
+            <div class="weather"><i class="fas fa-cloud-sun"></i></div>
+            18 / 23°C
+            <div class="date">{{ dateForcastTwoBuilder() }}</div>
+          </div>
+          <div class="weather-d">
+            <div class="weather"><i class="fas fa-cloud-sun"></i></div>
+            18 / 23°C
+            <div class="date">{{ dateForcastThreeBuilder() }}</div>
+          </div>
+          <div class="weather-d">
+            <div class="weather"><i class="fas fa-cloud-sun"></i></div>
+            18 / 23°C
+            <div class="date">{{ dateForcastFourBuilder() }}</div>
+          </div>
         </div>
       </div>
-
-      
     </main>
   </div>
 </template>
@@ -58,7 +87,7 @@ export default {
     dateBuilder () {
       let d = new Date();
       let months = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
-      let days = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "vendredi", "Samedi"];
+      let days = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
       let day = days[d.getDay()];
       let date = d.getDate();
       let month = months[d.getMonth()];
@@ -66,8 +95,35 @@ export default {
       return `${day} ${date} ${month} ${year}`;
     },
 
+    dateForcastOneBuilder () {
+      let d = new Date()
+      let days = ["Dim.", "Lun.", "Mar.", "Mer.", "Jeu.", "Ven.", "Sam."];
+      let day = days[d.getDay() + 1];
+      return `${day}`;
+    },
+
+    dateForcastTwoBuilder () {
+      let d = new Date()
+      let days = ["Dim.", "Lun.", "Mar.", "Mer.", "Jeu.", "Ven.", "Sam."];
+      let day = days[d.getDay() +2];
+      return `${day}`;
+    },
+
+    dateForcastThreeBuilder () {
+      let d = new Date()
+      let days = ["Dim.", "Lun.", "Mar.", "Mer.", "Jeu.", "Ven.", "Sam."];
+      let day = days[d.getDay() +3];
+      return `${day}`;
+    },
+
+    dateForcastFourBuilder () {
+      let d = new Date()
+      let days = ["Dim.", "Lun.", "Mar.", "Mer.", "Jeu.", "Ven.", "Sam."];
+      let day = days[d.getDay()+3];
+      return `${day}`;
+    },
+
     windDirection () {
-      
     }
   }
 }
@@ -86,6 +142,7 @@ body {
 }
 
 #app {
+  width: 600px;
   background-image: url('./assets/cold-bg.jpg');
   background-size: cover;
   background-position: bottom;
@@ -174,20 +231,68 @@ main {
   text-shadow: 3px 6px rgba(0, 0, 0, 0.25);
 }
 
-.weather-box .weather {
+.weather-box .weather-description {
   color: #FFF;
-  font-size: 48px;
-  font-weight: 700;
+  font-size: 40px;
+  font-weight: 600;
   font-style: italic;
   text-shadow: 3px 6px rgba(0, 0, 0, 0.25);
+}
+
+.weather-box .weather {
+  display: flex;
+  align-items:center;
+  justify-content: center;
+
+  padding: 10px;
 }
 
 .weather-box .pressure-humidity {
   color: #FFF;
-  font-size: 48px;
+  font-size: 30px;
   font-weight: 200;
   font-style: italic;
   text-shadow: 3px 6px rgba(0, 0, 0, 0.25);
+  background-color: rgba(255, 255, 255, 0.25);
+  border-radius: 16px;
+  padding: 10px;
+  margin: 10px;
+
+
+
 }
 
+.weather-box .wind {
+  color: #FFF;
+  font-size: 30px;
+  font-weight: 200;
+  font-style: italic;
+  text-shadow: 3px 6px rgba(0, 0, 0, 0.25);
+  background-color: rgba(255, 255, 255, 0.25);
+  border-radius: 16px;
+  margin: 10px;
+  padding: 10px;
+  
+}
+
+.weather-forecast {
+  display: inline-block;
+  align-items: flex-end;
+}
+
+.weather-forecast .weather-d {
+  text-align: center;
+  display: inline-block;
+  justify-items: center;
+  padding: 4px;
+  margin-top: 100px;
+  margin-left: 5px;
+  margin-right: 5px;
+  color: #FFF;
+  font-size: 25px;
+  font-weight:$00;
+  text-shadow: 3px 6px rgba(0, 0, 0, 0.25);
+  background-color: rgba(255, 255, 255, 0.25);
+  border-radius: 16px;
+}
 </style>
