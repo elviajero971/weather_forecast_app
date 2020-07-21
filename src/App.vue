@@ -1,25 +1,32 @@
 <template>
-  <div id="app">
+  <div id="app" :class="typeof weather.main != 'undefined' && weather.main.temp > 18 ? 'warm' : ''">
     <main>
       <div class="search-box">
         <input 
-        type="text" 
-        class="search-bar" 
-        placeholder="search..."/>
+          type="text" 
+          class="search-bar" 
+          placeholder="search..."
+          v-model="query"
+          @keypress="fetchWeather"
+        />
       </div>
 
-      <div class="weather-wrap">
+      <div class="weather-wrap" v-if="typeof weather.main != 'undefined'">
         <div class="location-box">
-          <div class="location">Montpellier, FR</div>
-          <div class="date">Mardi 21 Juillet 2020</div>
+          <div class="location">{{weather.name}}, {{weather.sys.country}}</div>
+          <div class="date">{{ dateBuilder() }}</div>
+        </div>
+        <div class="weather-box">
+          <div class="temp">{{ Math.round(weather.main.temp) }}°c</div>
+          <div class="weather">{{ weather.weather[0].main }}</div>
+          <div class="weather">Taux d'humidité: {{ weather.main.humidity }}%</div>
+          <div class="weather">Pression atmosphérique: {{ weather.main.pressure }}hPa</div>
+          <div class="weather">Vitesse du vent: {{ Math.round(weather.wind.speed*3,6) }}km/h</div>
+          <div class="weather">Direction du vent: {{ Math.round(weather.wind.deg) }}°</div>
         </div>
       </div>
 
-      <div class="weather-box">
-        <div class="temp">25°C</div>
-        <div class="weather">Cloudy</div>
-        
-      </div>
+      
     </main>
   </div>
 </template>
@@ -29,7 +36,37 @@ export default {
   name: 'App',
   data () {
     return {
-      api_key: '782590f8e978196668e1009710e1f9a1'
+      api_key: '782590f8e978196668e1009710e1f9a1',
+      url_base: "http://api.openweathermap.org/data/2.5/",
+      query:'',
+      weather: {}
+    }
+  },
+  methods: {
+    fetchWeather (e) {
+      if (e.key == "Enter") {
+        fetch(`${this.url_base}weather?q=${this.query}&units=metric&APPID=${this.api_key}`)
+        .then(res => {
+          return res.json();
+        }).then(this.setResults);
+      }
+    },
+    setResults (results) {
+      this.weather =results;
+    },
+    dateBuilder () {
+      let d = new Date();
+      let months = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+      let days = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "vendredi", "Samedi"];
+      let day = days[d.getDay()];
+      let date = d.getDate();
+      let month = months[d.getMonth()];
+      let year = d.getFullYear();
+      return `${day} ${date} ${month} ${year}`;
+    },
+
+    windDirection () {
+      
     }
   }
 }
@@ -51,6 +88,10 @@ body {
   background-size: cover;
   background-position: bottom;
   transition: 0.4s;
+}
+
+#app.warm {
+  background-image: url('./assets/warm-bg.jpg');
 }
 main {
   min-height: 100vh;
